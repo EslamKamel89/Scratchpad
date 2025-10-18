@@ -2,20 +2,31 @@ import { useState, type ReactNode } from "react";
 
 type NoteFormProps = {
   children?: ReactNode;
+  notes: NoteFormData[];
+  setNotes: (v: NoteFormData[]) => void;
 };
-type NoteFormData = {
+export type NoteFormData = {
+  id?: number;
   title: string;
   priority: string;
   category: string;
   description: string;
 };
-const NoteForm = ({ children }: NoteFormProps) => {
-  const [formData, setFormData] = useState<NoteFormData>({
+const NoteForm = ({ children, setNotes, notes }: NoteFormProps) => {
+  const initFormData = {
     title: "",
     priority: "Medium",
     category: "Work",
     description: "",
-  });
+  };
+  const initErrors = {
+    title: "",
+    priority: "",
+    category: "",
+    description: "",
+  };
+  const [formData, setFormData] = useState<NoteFormData>(initFormData);
+  const [errors, setErrors] = useState<NoteFormData>(initErrors);
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -25,8 +36,27 @@ const NoteForm = ({ children }: NoteFormProps) => {
     const value = e.target.value;
     setFormData({ ...formData, [key]: value });
   };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (checkErrors()) return;
+    const newNote = { ...formData, id: Date.now() };
+    setNotes([...notes, newNote]);
+    setFormData(initFormData);
+  };
+  const checkErrors = () => {
+    let isError = "";
+    setErrors({
+      title: (isError = formData.title ? "" : "title is required"),
+      priority: (isError = formData.priority ? "" : "priority is required"),
+      category: (isError = formData.category ? "" : "category is required"),
+      description: (isError = formData.description
+        ? ""
+        : "description is required"),
+    });
+    return isError !== "";
+  };
   return (
-    <form>
+    <form onSubmit={(e) => handleSubmit(e)}>
       <div className="mb-4">
         <label htmlFor="title" className="label">
           Title
@@ -40,7 +70,7 @@ const NoteForm = ({ children }: NoteFormProps) => {
           className="input"
           placeholder="Enter title"
         />
-        <p className="error">The title is required</p>
+        <p className="error">{errors.title}</p>
       </div>
       <div className="mb-4">
         <label htmlFor="priority" className="label">
@@ -57,7 +87,7 @@ const NoteForm = ({ children }: NoteFormProps) => {
           <option value="Medium">🟠 Medium</option>
           <option value="Low">🟢 Low</option>
         </select>
-        <p className="error">The Priority is required</p>
+        <p className="error">{errors.priority}</p>
       </div>
 
       <div className="mb-4">
@@ -75,7 +105,7 @@ const NoteForm = ({ children }: NoteFormProps) => {
           <option value="Personal">🧑‍🦱 Personal</option>
           <option value="Ideas">🧠 Ideas</option>
         </select>
-        <p className="error">The Category is required</p>
+        <p className="error">{errors.category}</p>
       </div>
       <div className="mb-4">
         <label htmlFor="description" className="label">
@@ -89,7 +119,7 @@ const NoteForm = ({ children }: NoteFormProps) => {
           className="input"
           placeholder="Enter description"
         />
-        <p className="error">The description is required</p>
+        <p className="error">{errors.description}</p>
       </div>
       <button className="btn">Save</button>
     </form>

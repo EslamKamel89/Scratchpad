@@ -1,11 +1,21 @@
+import { useState } from "react";
+import NoteCard from "./components/Card";
 import Header from "./components/Header";
-import NoteForm from "./components/NoteForm";
+import NoteForm, { type NoteFormData } from "./components/NoteForm";
 
 function App() {
+  const [notes, setNotes] = useState<NoteFormData[]>([]);
   return (
     <div className="mx-auto mt-10 max-w-lg rounded-lg bg-gray-100 p-6 shadow-lg">
       <Header>Scratch Pad 🖋️</Header>
-      <NoteForm />
+      <NoteForm notes={notes} setNotes={setNotes} />
+      <ul>
+        {notes.map((n) => (
+          <li className="flex flex-col space-y-4" key={`${n.id}`}>
+            <NoteCard note={n} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
