@@ -15,6 +15,11 @@ function App() {
             <NoteCard note={n} />
           </li>
         ))}
+        {!notes.length && (
+          <p className="my-5 w-full text-center text-sm text-gray-500">
+            No notes added yet
+          </p>
+        )}
       </ul>
     </div>
   );
