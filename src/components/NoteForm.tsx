@@ -3,11 +3,28 @@ import { useState, type ReactNode } from "react";
 type NoteFormProps = {
   children?: ReactNode;
 };
+type NoteFormData = {
+  title: string;
+  priority: string;
+  category: string;
+  description: string;
+};
 const NoteForm = ({ children }: NoteFormProps) => {
-  const [title, setTitle] = useState<string>("");
-  const [priority, setPriority] = useState<string>("Medium");
-  const [category, setCategory] = useState<string>("Work");
-  const [description, setDescription] = useState("");
+  const [formData, setFormData] = useState<NoteFormData>({
+    title: "",
+    priority: "Medium",
+    category: "Work",
+    description: "",
+  });
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const key = e.target.name as keyof NoteFormData;
+    const value = e.target.value;
+    setFormData({ ...formData, [key]: value });
+  };
   return (
     <form>
       <div className="mb-4">
@@ -15,10 +32,11 @@ const NoteForm = ({ children }: NoteFormProps) => {
           Title
         </label>
         <input
+          name="title"
           type="text"
           id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={formData.title}
+          onChange={handleChange}
           className="input"
           placeholder="Enter title"
         />
@@ -29,9 +47,10 @@ const NoteForm = ({ children }: NoteFormProps) => {
           priority
         </label>
         <select
+          name="priority"
           id="priority"
-          value={priority}
-          onChange={(e) => setPriority(e.target.value)}
+          value={formData.priority}
+          onChange={handleChange}
           className="input"
         >
           <option value="High">🔴 High</option>
@@ -46,9 +65,10 @@ const NoteForm = ({ children }: NoteFormProps) => {
           Category
         </label>
         <select
+          name="category"
           id="category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          value={formData.category}
+          onChange={handleChange}
           className="input"
         >
           <option value="Work">🏢 Work</option>
@@ -62,9 +82,10 @@ const NoteForm = ({ children }: NoteFormProps) => {
           description
         </label>
         <textarea
+          name="description"
           id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={formData.description}
+          onChange={handleChange}
           className="input"
           placeholder="Enter description"
         />
