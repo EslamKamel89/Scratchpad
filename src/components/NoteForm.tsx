@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import SelectInput from "./Inputs/SelectInput";
+import TextAreaInput from "./Inputs/TextAreaInput";
 import TextInput from "./Inputs/TextInput";
 
 type NoteFormProps = {
@@ -102,20 +103,17 @@ const NoteForm = ({ children, setNotes, notes }: NoteFormProps) => {
             error={errors.category}
           />
 
-          <div className="mb-4">
-            <label htmlFor="description" className="label">
-              description
-            </label>
-            <textarea
-              name="description"
-              id="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="input"
-              placeholder="Enter description"
-            />
-            <p className="error">{errors.description}</p>
-          </div>
+          <TextAreaInput
+            label="Description"
+            name="description"
+            id="description"
+            required={true}
+            error={errors.description}
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Enter description"
+          />
+
           <button className="btn">Save</button>
         </form>
       )}
