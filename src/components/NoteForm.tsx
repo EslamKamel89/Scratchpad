@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import TextInput from "./Inputs/TextInput";
 
 type NoteFormProps = {
   children?: ReactNode;
@@ -68,21 +69,17 @@ const NoteForm = ({ children, setNotes, notes }: NoteFormProps) => {
       </button>
       {isVisible && (
         <form onSubmit={(e) => handleSubmit(e)}>
-          <div className="mb-4">
-            <label htmlFor="title" className="label">
-              Title
-            </label>
-            <input
-              name="title"
-              type="text"
-              id="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="input"
-              placeholder="Enter title"
-            />
-            <p className="error">{errors.title}</p>
-          </div>
+          <TextInput
+            label="title"
+            name="title"
+            type="text"
+            id="title"
+            required={true}
+            error={errors.title}
+            value={formData.title}
+            onChange={handleChange}
+            placeholder="Enter title"
+          />
           <div className="mb-4">
             <label htmlFor="priority" className="label">
               priority
