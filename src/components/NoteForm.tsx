@@ -27,6 +27,7 @@ const NoteForm = ({ children, setNotes, notes }: NoteFormProps) => {
   };
   const [formData, setFormData] = useState<NoteFormData>(initFormData);
   const [errors, setErrors] = useState<NoteFormData>(initErrors);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -42,6 +43,7 @@ const NoteForm = ({ children, setNotes, notes }: NoteFormProps) => {
     const newNote = { ...formData, id: Date.now() };
     setNotes([...notes, newNote]);
     setFormData(initFormData);
+    setIsVisible(false);
   };
   const checkErrors = () => {
     let isError = "";
@@ -56,73 +58,84 @@ const NoteForm = ({ children, setNotes, notes }: NoteFormProps) => {
     return isError !== "";
   };
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
-      <div className="mb-4">
-        <label htmlFor="title" className="label">
-          Title
-        </label>
-        <input
-          name="title"
-          type="text"
-          id="title"
-          value={formData.title}
-          onChange={handleChange}
-          className="input"
-          placeholder="Enter title"
-        />
-        <p className="error">{errors.title}</p>
-      </div>
-      <div className="mb-4">
-        <label htmlFor="priority" className="label">
-          priority
-        </label>
-        <select
-          name="priority"
-          id="priority"
-          value={formData.priority}
-          onChange={handleChange}
-          className="input"
-        >
-          <option value="High">🔴 High</option>
-          <option value="Medium">🟠 Medium</option>
-          <option value="Low">🟢 Low</option>
-        </select>
-        <p className="error">{errors.priority}</p>
-      </div>
+    <>
+      <button
+        type="button"
+        className="btn my-4"
+        onClick={() => setIsVisible(!isVisible)}
+      >
+        {isVisible ? "Hide Form ❌" : "Add Note ➕"}
+      </button>
+      {isVisible && (
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <div className="mb-4">
+            <label htmlFor="title" className="label">
+              Title
+            </label>
+            <input
+              name="title"
+              type="text"
+              id="title"
+              value={formData.title}
+              onChange={handleChange}
+              className="input"
+              placeholder="Enter title"
+            />
+            <p className="error">{errors.title}</p>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="priority" className="label">
+              priority
+            </label>
+            <select
+              name="priority"
+              id="priority"
+              value={formData.priority}
+              onChange={handleChange}
+              className="input"
+            >
+              <option value="High">🔴 High</option>
+              <option value="Medium">🟠 Medium</option>
+              <option value="Low">🟢 Low</option>
+            </select>
+            <p className="error">{errors.priority}</p>
+          </div>
 
-      <div className="mb-4">
-        <label htmlFor="category" className="label">
-          Category
-        </label>
-        <select
-          name="category"
-          id="category"
-          value={formData.category}
-          onChange={handleChange}
-          className="input"
-        >
-          <option value="Work">🏢 Work</option>
-          <option value="Personal">🧑‍🦱 Personal</option>
-          <option value="Ideas">🧠 Ideas</option>
-        </select>
-        <p className="error">{errors.category}</p>
-      </div>
-      <div className="mb-4">
-        <label htmlFor="description" className="label">
-          description
-        </label>
-        <textarea
-          name="description"
-          id="description"
-          value={formData.description}
-          onChange={handleChange}
-          className="input"
-          placeholder="Enter description"
-        />
-        <p className="error">{errors.description}</p>
-      </div>
-      <button className="btn">Save</button>
-    </form>
+          <div className="mb-4">
+            <label htmlFor="category" className="label">
+              Category
+            </label>
+            <select
+              name="category"
+              id="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="input"
+            >
+              <option value="Work">🏢 Work</option>
+              <option value="Personal">🧑‍🦱 Personal</option>
+              <option value="Ideas">🧠 Ideas</option>
+            </select>
+            <p className="error">{errors.category}</p>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="description" className="label">
+              description
+            </label>
+            <textarea
+              name="description"
+              id="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="input"
+              placeholder="Enter description"
+            />
+            <p className="error">{errors.description}</p>
+          </div>
+          <button className="btn">Save</button>
+        </form>
+      )}
+    </>
   );
 };
 
