@@ -113,7 +113,6 @@ const NoteForm = ({ children, setNotes, notes }: NoteFormProps) => {
             onChange={handleChange}
             placeholder="Enter description"
           />
-
           <button className="btn">Save</button>
         </form>
       )}

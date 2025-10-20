@@ -5,6 +5,11 @@ import NoteForm, { type NoteFormData } from "./components/NoteForm";
 
 function App() {
   const [notes, setNotes] = useState<NoteFormData[]>([]);
+  const deleteNote = (note: NoteFormData) => {
+    const confirm = window.confirm("Are you sure you want to delete this note");
+    if (!confirm) return;
+    setNotes(notes.filter((n) => n.id !== note.id));
+  };
   return (
     <div className="mx-auto mt-10 max-w-lg rounded-lg bg-gray-100 p-6 shadow-lg">
       <Header>Scratch Pad 🖋️</Header>
@@ -12,7 +17,7 @@ function App() {
       <ul>
         {notes.map((n) => (
           <li className="flex flex-col space-y-4" key={`${n.id}`}>
-            <NoteCard note={n} />
+            <NoteCard note={n} onDelete={deleteNote} />
           </li>
         ))}
         {!notes.length && (
