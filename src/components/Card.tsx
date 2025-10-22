@@ -11,14 +11,18 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, onDelete }) => {
   const { title, priority, category, description } = note;
 
   const priorityColor = {
-    low: "bg-purple-100 text-purple-700 border-purple-300",
-    medium: "bg-purple-200 text-purple-800 border-purple-400",
-    high: "bg-purple-300 text-purple-900 border-purple-500",
-  }[priority];
-
+    low: "bg-green-100 text-green-700 border-green-300",
+    medium: "bg-orange-200 text-orange-800 border-orange-400",
+    high: "bg-red-300 text-red-900 border-red-500",
+  }[priority.toLowerCase()];
+  const borderColor = {
+    low: "border-green-300 shadow-lg shadow-green-500",
+    medium: "border-orange-400 shadow-lg shadow-orange-500",
+    high: "border-red-500 shadow-lg shadow-red-500",
+  }[priority.toLowerCase()];
   return (
     <div
-      className={`relative my-2 w-full rounded-2xl border bg-white p-5 shadow-md transition-shadow duration-200 hover:shadow-lg`}
+      className={`relative my-2 w-full rounded-2xl border bg-white p-5 shadow-md transition-shadow duration-200 hover:shadow-lg ${borderColor}`}
     >
       <button
         onClick={() => onDelete(note)}
