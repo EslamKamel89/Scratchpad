@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
-import SelectInput from "./Inputs/SelectInput";
-import TextAreaInput from "./Inputs/TextAreaInput";
-import TextInput from "./Inputs/TextInput";
+import SelectInput from "../Inputs/SelectInput";
+import TextAreaInput from "../Inputs/TextAreaInput";
+import TextInput from "../Inputs/TextInput";
 
 type NoteFormProps = {
   children?: ReactNode;
