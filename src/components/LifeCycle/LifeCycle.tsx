@@ -11,7 +11,7 @@ const LifeCycle = () => {
       <button onClick={() => setShowLogger(!showLogger)} className="btn">
         {showLogger ? "Unmount logger" : "Mount logger"}
       </button>
-      {showLogger && <LifeCycleLogger message="Logger (class component)" />}
+      {showLogger && <LifeCycleLogger message="Logger (sfc component)" />}
     </div>
   );
 };
