@@ -1,4 +1,5 @@
 import { useState } from "react";
+import LifeCycleLogger from "../LifeCycleLogger";
 
 const LifeCycle = () => {
   const [showLogger, setShowLogger] = useState(false);
@@ -10,11 +11,7 @@ const LifeCycle = () => {
       <button onClick={() => setShowLogger(!showLogger)} className="btn">
         {showLogger ? "Unmount logger" : "Mount logger"}
       </button>
-      {showLogger && (
-        <div className="my-4 flex h-44 w-full items-center justify-center rounded-2xl bg-purple-950 text-white">
-          <div>Logger</div>
-        </div>
-      )}
+      {showLogger && <LifeCycleLogger message="Logger (class component)" />}
     </div>
   );
 };
