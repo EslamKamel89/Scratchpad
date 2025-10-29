@@ -1,6 +1,7 @@
 import { useState } from "react";
 import LifeCycle from "./components/LifeCycle/LifeCycle";
 import Notes from "./components/Notes/Notes";
+import Timer from "./components/Timer";
 
 function App() {
   const [tab, setTab] = useState(0);
@@ -13,10 +14,14 @@ function App() {
         <button onClick={() => setTab(1)} className="btn">
           Life Cycle
         </button>
+        <button onClick={() => setTab(2)} className="btn">
+          Timer
+        </button>
       </div>
       <div className="my-2 w-full border-b shadow-lg"></div>
       {tab === 0 && <Notes />}
       {tab === 1 && <LifeCycle />}
+      {tab === 2 && <Timer />}
     </div>
   );
 }
