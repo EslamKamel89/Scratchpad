@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type LifeCycleLoggerProps = {
   message: string;
 };
 const LifeCycleLogger = ({ message }: LifeCycleLoggerProps) => {
   const [count, setCount] = useState(0);
+  useEffect(() => {
+    console.log("Component mounted..........");
+    return () => {
+      console.log("Component unmounted......");
+    };
+  }, []);
+  useEffect(() => {
+    if (count > 0) {
+      console.log("Component count state is updated: " + count);
+    }
+  }, [count]);
   const incrementCount = () => {
     setCount((prev) => prev + 1);
   };
