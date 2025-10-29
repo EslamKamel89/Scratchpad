@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NoteCard from "./Card";
 import Header from "./Header";
 import type { NoteFormData } from "./NoteForm";
 import NoteForm from "./NoteForm";
-
 function Notes() {
-  const [notes, setNotes] = useState<NoteFormData[]>([]);
+  const [notes, setNotes] = useState<NoteFormData[]>(() => {
+    return JSON.parse(localStorage.getItem("notes") ?? "[]");
+  });
+  useEffect(() => {
+    console.log("Component mounted..........");
+  }, []);
+  useEffect(() => {
+    localStorage.setItem("notes", JSON.stringify(notes));
+    console.log("Component notes updated........");
+  }, [notes]);
   const deleteNote = (note: NoteFormData) => {
     const confirm = window.confirm("Are you sure you want to delete this note");
     if (!confirm) return;
