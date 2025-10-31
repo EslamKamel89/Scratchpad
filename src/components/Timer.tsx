@@ -1,8 +1,8 @@
 import { CirclePlay, Pause, Play, Square } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Timer = () => {
-  const timer = useRef(null);
+  const timer = useRef<number>(null);
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
@@ -21,6 +21,21 @@ const Timer = () => {
     }
     setIsRunning(!isRunning);
   };
+  useEffect(() => {
+    if (!isRunning) {
+      if (timer.current) clearInterval(timer.current);
+    } else {
+      timer.current = setInterval(() => {
+        setTime((prevState) => prevState + 1);
+      }, 1000);
+    }
+    return () => {
+      if (timer.current) clearInterval(timer.current);
+    };
+  }, [isRunning]);
+  useEffect(() => {
+    setTime(0);
+  }, [isStarted]);
   return (
     <div className="min-h-dvh bg-gradient-to-br from-slate-100 to-slate-200 text-slate-900 antialiased">
       <main className="grid min-h-dvh place-items-center p-6">
