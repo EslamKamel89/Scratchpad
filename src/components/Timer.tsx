@@ -1,4 +1,21 @@
+import { useEffect, useRef } from "react";
+
 const Timer = () => {
+  const inputRef: React.Ref<HTMLInputElement> = useRef(null);
+  useEffect(() => {
+    inputRef?.current?.focus();
+  }, []);
+  const save = () => {
+    if (inputRef.current == null) return;
+    inputRef.current?.blur();
+    inputRef.current.style.backgroundColor = "green";
+    inputRef.current.style.color = "white";
+    setTimeout(() => {
+      if (inputRef.current == null) return;
+      inputRef.current.style.backgroundColor = "white";
+      inputRef.current.style.color = "black";
+    }, 2000);
+  };
   return (
     <div className="min-h-dvh bg-gradient-to-br from-slate-100 to-slate-200 text-slate-900 antialiased">
       <main className="grid min-h-dvh place-items-center p-6">
@@ -11,7 +28,21 @@ const Timer = () => {
                 Welcome Eslam
               </span>
             </header>
-
+            <div className="mb-8 flex flex-col space-y-2 space-x-2 md:flex-row">
+              <input
+                ref={inputRef}
+                type="number"
+                className="input flex-4"
+                placeholder="Enter time value in seconds"
+              />
+              <button
+                onClick={() => save()}
+                className="btn-outline w-fit flex-1"
+                type="button"
+              >
+                Ok
+              </button>
+            </div>
             <div className="mb-8">
               <p className="text-sm tracking-wide text-slate-500 uppercase">
                 Elapsed
@@ -29,10 +60,7 @@ const Timer = () => {
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-medium text-white shadow hover:bg-slate-800 active:translate-y-px"
-              >
+              <button type="button" className="btn-accent">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -46,10 +74,7 @@ const Timer = () => {
                 </span>
               </button>
 
-              <button
-                type="button"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-medium shadow hover:bg-slate-50 active:translate-y-px"
-              >
+              <button type="button" className="btn-outline">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
