@@ -1,20 +1,25 @@
-import { useEffect, useRef } from "react";
+import { CirclePlay, Pause, Play, Square } from "lucide-react";
+import { useRef, useState } from "react";
 
 const Timer = () => {
-  const inputRef: React.Ref<HTMLInputElement> = useRef(null);
-  useEffect(() => {
-    inputRef?.current?.focus();
-  }, []);
-  const save = () => {
-    if (inputRef.current == null) return;
-    inputRef.current?.blur();
-    inputRef.current.style.backgroundColor = "green";
-    inputRef.current.style.color = "white";
-    setTimeout(() => {
-      if (inputRef.current == null) return;
-      inputRef.current.style.backgroundColor = "white";
-      inputRef.current.style.color = "black";
-    }, 2000);
+  const timer = useRef(null);
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
+  const toggleStart = () => {
+    setIsStarted((prevState) => {
+      const newState = !prevState;
+      setIsRunning(newState);
+      return newState;
+    });
+  };
+  const toggleRunning = () => {
+    if (isRunning && !isStarted) {
+      throw new DOMException(
+        "You can't have both the isRunning = true and isStarted = false",
+      );
+    }
+    setIsRunning(!isRunning);
   };
   return (
     <div className="min-h-dvh bg-gradient-to-br from-slate-100 to-slate-200 text-slate-900 antialiased">
@@ -28,21 +33,7 @@ const Timer = () => {
                 Welcome Eslam
               </span>
             </header>
-            <div className="mb-8 flex flex-col space-y-2 space-x-2 md:flex-row">
-              <input
-                ref={inputRef}
-                type="number"
-                className="input flex-4"
-                placeholder="Enter time value in seconds"
-              />
-              <button
-                onClick={() => save()}
-                className="btn-outline w-fit flex-1"
-                type="button"
-              >
-                Ok
-              </button>
-            </div>
+
             <div className="mb-8">
               <p className="text-sm tracking-wide text-slate-500 uppercase">
                 Elapsed
@@ -53,39 +44,33 @@ const Timer = () => {
                   aria-atomic="true"
                   className="font-mono text-6xl leading-none tabular-nums sm:text-7xl"
                 >
-                  123
+                  {time}
                 </span>
                 <span className="text-slate-500">sec</span>
               </div>
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <button type="button" className="btn-accent">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="size-4"
+              {isStarted && (
+                <button
+                  type="button"
+                  onClick={() => toggleRunning()}
+                  className="btn-accent disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <path d="M6.75 5.25a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V5.25Zm6 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V5.25Z" />
-                </svg>
-                <span>
-                  Pause <span className="mx-1 opacity-40">/</span> Resume
-                </span>
-              </button>
+                  {!isRunning && <Play />}
+                  {isRunning && <Pause />}
+                  <span>{isRunning ? "Pause" : "Resume"}</span>
+                </button>
+              )}
 
-              <button type="button" className="btn-outline">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="size-4"
-                >
-                  <path d="M8 5.143c0-1.27 1.374-2.058 2.476-1.366l7.455 4.71c1.046.661 1.046 2.07 0 2.732l-7.455 4.71C9.374 16.62 8 15.832 8 14.561V5.143Z" />
-                </svg>
-                <span>
-                  Start <span className="mx-1 opacity-40">/</span> Stop
-                </span>
+              <button
+                onClick={() => toggleStart()}
+                type="button"
+                className="btn-outline"
+              >
+                {!isStarted && <CirclePlay />}
+                {isStarted && <Square />}
+                <span>{isStarted ? "Stop " : " Start"}</span>
               </button>
             </div>
 
