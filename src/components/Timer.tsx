@@ -4,10 +4,10 @@ import RemainingTime from "./Timer/RemainingTime";
 import ResumePauseButton from "./Timer/ResumePauseButton";
 import StartStopButton from "./Timer/StartStopButton";
 import TimerContainer from "./Timer/TimerContainer";
-
 const Timer = () => {
+  const init = useRef(false);
   const timer = useRef<number>(null);
-  const [time, setTime] = useState(0);
+  const [time, setTime] = useState(Number(localStorage.getItem("time")));
   const [isRunning, setIsRunning] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
   const toggleStart = () => {
@@ -30,7 +30,11 @@ const Timer = () => {
       if (timer.current) clearInterval(timer.current);
     } else {
       timer.current = setInterval(() => {
-        setTime((prevState) => prevState + 1);
+        setTime((prevState) => {
+          const newState = prevState + 1;
+          localStorage.setItem("time", "" + newState);
+          return newState;
+        });
       }, 1000);
     }
     return () => {
@@ -38,7 +42,11 @@ const Timer = () => {
     };
   }, [isRunning]);
   useEffect(() => {
-    setTime(0);
+    if (init.current && !isStarted) {
+      setTime(0);
+      localStorage.setItem("time", "0");
+    }
+    init.current = true;
   }, [isStarted]);
   return (
     <TimerContainer>
